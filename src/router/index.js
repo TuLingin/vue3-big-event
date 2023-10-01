@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '../stores/modules/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,7 +15,7 @@ const router = createRouter({
           component: () => import('@/views/article/ArticleManager.vue')
         },
         {
-          path: '/article/chanel',
+          path: '/article/channel',
           component: () => import('@/views/article/ArticleChanel.vue')
         },
         {
@@ -32,6 +33,12 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach((to) => {
+  if (!useUserStore().token && to.path !== '/login') {
+    return '/login'
+  }
 })
 
 export default router
